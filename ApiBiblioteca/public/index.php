@@ -69,15 +69,22 @@ switch ($resource) {
             }
         } else if ($method === 'POST') {
             $librosController->store();
-        }
-        else if ($method === 'PUT') {
+        } else if ($method === 'PUT') {
             if ($id !== null && $id > 0) {
                 $librosController->update($id);
             } else {
                 http_response_code(400);
+                echo json_encode(["status" => "error", "message" => "Se requiere un ID válido."]);
+            }
+        }
+        else if ($method === 'DELETE') {
+            if ($id !== null && $id > 0) {
+                $librosController->destroy($id);
+            } else {
+                http_response_code(400);
                 echo json_encode([
                     "status" => "error",
-                    "message" => "Se requiere un ID numérico válido para actualizar el libro."
+                    "message" => "Se requiere un ID numérico válido para eliminar el libro."
                 ]);
             }
         } else {
