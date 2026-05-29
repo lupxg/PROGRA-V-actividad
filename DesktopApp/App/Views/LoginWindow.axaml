@@ -1,0 +1,120 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="550"
+        x:Class="App.LoginWindow"
+        Width="400" Height="550"
+        CanResize="False"
+        Background="#0B090F"
+        Icon="/Assets/Logo1.png"
+        RequestedThemeVariant="Dark"
+        WindowStartupLocation="CenterScreen"
+        Title="Login"
+        >
+
+    <Grid Background="#0B090F">
+
+        <StackPanel VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Width="320"
+                    Spacing="22">
+
+            <Image Source="\Assets\Logo1.png"
+                   Height="75"
+                   Width="75"
+                   HorizontalAlignment="Center"
+                   Margin="0,0,0,10"/>
+
+            <StackPanel Spacing="5" Margin="0,0,0,10">
+                <TextBlock Text="¡Hola de nuevo!"
+                           FontSize="24"
+                           FontWeight="SemiBold"
+                           Foreground="#FFFFFF"
+                           HorizontalAlignment="Center"/>
+                <TextBlock Text="Ingresa a tu cuenta"
+                           FontSize="12"
+                           Foreground="#6F6C7D"
+                           HorizontalAlignment="Center"/>
+            </StackPanel>
+
+            <StackPanel Spacing="6">
+                <TextBlock Text="Correo Electrónico"
+                           FontSize="11"
+                           FontWeight="Medium"
+                           Foreground="#9A95B0"/>
+                <TextBox PlaceholderText="nombre@ejemplo.com"
+                         Height="42"
+                         CornerRadius="6"
+                         Background="#120F1A"
+                         BorderBrush="#2A2238"
+                         BorderThickness="1"
+                         Foreground="#FFFFFF"
+                         VerticalContentAlignment="Center"/>
+            </StackPanel>
+
+            <StackPanel Spacing="6">
+                <DockPanel>
+                    <TextBlock Text="Contraseña"
+                               FontSize="11"
+                               FontWeight="Medium"
+                               Foreground="#9A95B0"
+                               VerticalAlignment="Center"/>
+                    <Button Content="¿Olvidaste tu contraseña?"
+                            FontSize="11"
+                            Foreground="#A370F7"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Padding="0"
+                            HorizontalAlignment="Right"/>
+                </DockPanel>
+                <TextBox PlaceholderText="••••••••"
+                         PasswordChar="•"
+                         Height="42"
+                         CornerRadius="6"
+                         Background="#120F1A"
+                         BorderBrush="#2A2238"
+                         BorderThickness="1"
+                         Foreground="#FFFFFF"
+                         VerticalContentAlignment="Center"/>
+            </StackPanel>
+
+            <Button HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Height="44"
+                    Margin="0,15,0,0"
+                    CornerRadius="6"
+                    Foreground="#FFFFFF"
+                    FontWeight="SemiBold"
+                    FontSize="14">
+
+                <Button.Background>
+                    <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,100%">
+                        <GradientStop Offset="0.0" Color="#512BD4"/> <GradientStop Offset="1.0" Color="#7022B4"/> </LinearGradientBrush>
+                </Button.Background>
+
+                <Button.Styles>
+                    <Style Selector="Button:pointerover /template/ ContentPresenter">
+                        <Setter Property="Opacity" Value="0.9"/>
+                    </Style>
+                </Button.Styles>
+
+                <Button.Content>
+                    <TextBlock Text="Iniciar Sesión" VerticalAlignment="Center"/>
+                </Button.Content>
+            </Button>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0" Spacing="4">
+                <TextBlock Text="¿Eres nuevo aquí?" FontSize="12" Foreground="#4A4557"/>
+                <Button Content="Crea una cuenta"
+                        FontSize="12"
+                        Foreground="#A370F7"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Padding="0"/>
+            </StackPanel>
+
+        </StackPanel>
+    </Grid>
+</Window>
