@@ -131,4 +131,22 @@ class Libro
 
         return $resultado;
     }
+
+    public function delete(int $id)
+    {
+        $query = "DELETE FROM " . $this->table . " WHERE id = ?";
+        $stmt = $this->db->prepare($query);
+
+        if (!$stmt) {
+            return false;
+        }
+
+        
+        $stmt->bind_param("i", $id);
+
+        $resultado = $stmt->execute();
+        $stmt->close();
+
+        return $resultado;
+    }
 }
