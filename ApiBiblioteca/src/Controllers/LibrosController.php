@@ -168,7 +168,7 @@ class LibrosController
         $exito = $this->libroModel->update($id, $titulo, $autor, $categoria, $stock, $disponible, $nombreImagen);
 
         if ($exito) {
-            http_response_code(200); 
+            http_response_code(200);
             echo json_encode([
                 "status" => "success",
                 "message" => "Libro actualizado correctamente."
@@ -178,6 +178,46 @@ class LibrosController
             echo json_encode([
                 "status" => "error",
                 "message" => "Error interno al intentar actualizar el libro."
+            ]);
+        }
+    }
+
+    public function destroy(int $id)
+    {
+        $id = filter_var($id, FILTER_VALIDATE_INT);
+        if ($id === false || $id < 1) {
+            http_response_code(400);
+            echo json_encode(["status" => "error", "message" => "El ID del libro no es válido."]);
+            return;
+        }
+
+        $libro = $this->libroModel->getById($id);
+        if (!$libro) {
+            http_response_code(404);
+            echo json_encode(["status" => "error", "message" => "El libro que intenta eliminar no existe."]);
+            return;
+        }
+
+        if (!empty($libro['imagen_url'])) {
+            $rutaImagen = __DIR__ . '/../../public/uploads/' . $libro['imagen_url'];
+            if (file_exists($rutaImagen)) {
+                unlink($rutaImagen); // Borra fisicamente la portada
+            }
+        }
+
+        $exito = $this->libroModel->delete($id);
+
+        if ($exito) {
+            http_response_code(200); 
+            echo json_encode([
+                "status" => "success",
+                "message" => "Libro y su archivo de portada eliminados correctamente."
+            ]);
+        } else {
+            http_response_code(500);
+            echo json_encode([
+                "status" => "error",
+                "message" => "Error interno al intentar eliminar el libro de la base de datos."
             ]);
         }
     }
