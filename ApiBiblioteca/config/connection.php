@@ -8,9 +8,14 @@ class Connection {
     private? mysqli $conn;
 
     public function getConnection() {
+        $dbName = getenv("MARIADB_NAME");
+        $dbHost = getenv("MARIADB_HOST");
+        $dbUser = getenv("MARIADB_USER");
+        $dbPassword = "jagjajgakjgklj+akjgajk";
+
         $this->conn = null;
         try {
-            $this->conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+            $this->conn = new mysqli($dbHost, $dbUser, $dbPassword, $dbName);
 
             if ($this->conn->connect_error) {
                 throw new Exception("Error de conexion: " . $this->conn->connect_error);
