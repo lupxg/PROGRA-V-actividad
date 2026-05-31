@@ -11,7 +11,11 @@ class Connection {
         $dbName = getenv("MARIADB_NAME");
         $dbHost = getenv("MARIADB_HOST");
         $dbUser = getenv("MARIADB_USER");
-        $dbPassword = "jagjajgakjgklj+akjgajk";
+        $dbFilePassword = getenv("MARIADB_ROOT_PASSWORD_FILE");
+        $fn = fopen($dbFilePassword, 'r');
+        $dbPassword = fgets($fn);
+        fclose($fn);
+        //$dbPassword = "jagjajgakjgklj+akjgajk";
 
         $this->conn = null;
         try {
