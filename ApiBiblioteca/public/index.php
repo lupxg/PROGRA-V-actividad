@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../config/connection.php';
 require_once __DIR__ . '/../src/Controllers/AuthController.php';
 require_once __DIR__ . '/../src/Controllers/LibrosController.php';
+require_once __DIR__ . '/../src/Controllers/PrestamosController.php';
 
 //Cabeceras globales
 header("Access-Control-Allow-Origin: *");
@@ -92,6 +93,43 @@ switch ($resource) {
             echo json_encode(["status" => "error", "message" => "Método no permitido."]);
         }
         break;
+    case 'prestamos':
+        $prestamosController = new PrestamosController($dbConn);
+
+        if ($method === 'GET') {
+
+            $prestamosController->index();
+
+        } else if ($method === 'POST') {
+
+            $prestamosController->store();
+
+        } else if ($method === 'DELETE') {
+
+            if ($id !== null && $id > 0) {
+
+                $prestamosController->destroy($id);
+
+            } else {
+
+                http_response_code(400);
+
+                echo json_encode([
+                    "status" => "error",
+                    "message" => "Se requiere un ID numérico válido para eliminar el préstamo."
+                ]);
+            }
+
+        } else {
+
+            http_response_code(405);
+
+            echo json_encode([
+                "status" => "error",
+                "message" => "Método no permitido."
+            ]);
+        }
+    break;
 
     default:
         http_response_code(404);
