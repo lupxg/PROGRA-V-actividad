@@ -67,4 +67,110 @@ class Usuario
         return $resultado;
     }
 
+    
+    /**
+     * Obtener usuario por ID
+     */
+    public function getById(int $id)
+    {
+        $query = "
+            SELECT 
+                id,
+                nombre,
+                correo,
+                rol
+            FROM " . $this->table . "
+            WHERE id = ?
+            LIMIT 1
+        ";
+
+        $stmt = $this->db->prepare($query);
+
+        if (!$stmt) {
+            return null;
+        }
+
+        $stmt->bind_param("i", $id);
+
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        $usuario = $result->fetch_assoc();
+
+        $stmt->close();
+
+        return $usuario;
+    }
+
+    /**
+     * Actualizar usuario
+     */
+    public function update(
+        int $id,
+        string $nombre,
+        string $correo,
+        string $password,
+        string $rol
+    ) {
+
+        $query = "
+            UPDATE " . $this->table . "
+            SET
+                nombre = ?,
+                correo = ?,
+                password = ?,
+                rol = ?
+            WHERE id = ?
+        ";
+
+        $stmt = $this->db->prepare($query);
+
+        if (!$stmt) {
+            return false;
+        }
+
+        $stmt->bind_param(
+            "ssssi",
+            $nombre,
+            $correo,
+            $password,
+            $rol,
+            $id
+        );
+
+        $resultado = $stmt->execute();
+
+        $stmt->close();
+
+        return $resultado;
+    }
+
+    /**
+     * Eliminar usuario
+     */
+    public function delete(int $id)
+    {
+        $query = "
+            DELETE FROM " . $this->table . "
+            WHERE id = ?
+        ";
+
+        $stmt = $this->db->prepare($query);
+
+        if (!$stmt) {
+            return false;
+        }
+
+        $stmt->bind_param("i", $id);
+
+        $resultado = $stmt->execute();
+
+        $stmt->close();
+
+        return $resultado;
+    }
+
+
+
 }

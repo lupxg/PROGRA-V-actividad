@@ -79,7 +79,7 @@ class Libro
         return $libros;
     }
 
-    public function create(string $titulo, string $autor, string $categoria, int $stock, int $disponible, string $imagen_url)
+    public function create(string $titulo, string $autor, string $categoria, int $stock, int $disponible, ?string $imagen_url)
     {
         $query = "INSERT INTO " . $this->table . " (titulo, autor, categoria, stock, disponible, imagen_url) VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = $this->db->prepare($query);
@@ -104,7 +104,7 @@ class Libro
         if (!$stmt)
             return null;
 
-        $stmt->bind_param("i", $id);
+        $stmt->bind_param("id", $id);
         $stmt->execute();
         $result = $stmt->get_result();
 
@@ -115,7 +115,7 @@ class Libro
     }
 
 
-    public function update(int $id, $titulo, $autor, $categoria, $stock, $disponible, $imagen_url)
+    public function update(int $id, string $titulo, string $autor, string $categoria,  int $stock, int $disponible, ?string $imagen_url)
     {
         $query = "UPDATE " . $this->table . " SET titulo = ?, autor = ?, categoria = ?, stock = ?, disponible = ?, imagen_url = ? WHERE id = ?";
         $stmt = $this->db->prepare($query);

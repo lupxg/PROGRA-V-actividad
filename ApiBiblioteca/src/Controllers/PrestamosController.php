@@ -20,7 +20,7 @@ class PrestamosController
      */
     public function index()
     {
-         $page = isset($_GET['page']) ? filter_var($_GET['page'], FILTER_VALIDATE_INT) : 1;
+        $page = isset($_GET['page']) ? filter_var($_GET['page'], FILTER_VALIDATE_INT) : 1;
 
         if ($page === false || $page < 1) {
             $page = 1;
@@ -32,6 +32,7 @@ class PrestamosController
 
         echo json_encode([
             "status" => "success",
+            "page" => $page,
             "count" => count($prestamos),
             "data" => $prestamos
         ]);

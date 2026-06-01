@@ -4,7 +4,7 @@ require_once __DIR__ . '/../config/connection.php';
 require_once __DIR__ . '/../src/Controllers/AuthController.php';
 require_once __DIR__ . '/../src/Controllers/LibrosController.php';
 require_once __DIR__ . '/../src/Controllers/PrestamosController.php';
-
+require_once __DIR__ . '/../src/Controllers/MultasController.php';
 //Cabeceras globales
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
@@ -36,6 +36,7 @@ if (empty($urlParams) || $urlParams[0] !== 'api') {
 // El siguiente parametro define el recurso (ej: "libros", "usuarios", "login")
 $resource = isset($urlParams[1]) ? $urlParams[1] : '';
 $id = isset($urlParams[2]) ? (int) $urlParams[2] : null;
+
 
 //Enrutador basico (Estructura de control)
 switch ($resource) {
@@ -129,7 +130,60 @@ switch ($resource) {
                 "message" => "Método no permitido."
             ]);
         }
-    break;
+        break;
+    case 'multas':
+        $multasController = new MultasController($dbConn);
+
+        if ($method === 'GET') {
+
+            $multasController->index();
+
+        } else if ($method === 'POST') {
+
+            $multasController->store();
+
+        } else if ($method === 'PUT') {
+
+            if ($id !== null && $id > 0) {
+
+                $multasController->update($id);
+
+            } else {
+
+                http_response_code(400);
+
+                echo json_encode([
+                    "status" => "error",
+                    "message" => "Se requiere un ID válido."
+                ]);
+            }
+
+        } else if ($method === 'DELETE') {
+
+            if ($id !== null && $id > 0) {
+
+                $multasController->destroy($id);
+
+            } else {
+
+                http_response_code(400);
+
+                echo json_encode([
+                    "status" => "error",
+                    "message" => "Se requiere un ID numérico válido para eliminar la multa."
+                ]);
+            }
+
+        } else {
+
+            http_response_code(405);
+
+            echo json_encode([
+                "status" => "error",
+                "message" => "Método no permitido."
+            ]);
+        }
+        break;
 
     default:
         http_response_code(404);

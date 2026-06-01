@@ -35,6 +35,7 @@ class LibrosController
             "data" => $libros
         ]);
     }
+    
     public function search(?string $titulo)
     {
         $termino = trim(urldecode($titulo));
