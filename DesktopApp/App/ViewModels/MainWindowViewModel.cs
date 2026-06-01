@@ -7,21 +7,34 @@ namespace App.ViewModels;
 
 public partial class MainWindowViewModel : ViewModelBase
 {
-    public IRelayCommand MessageCommand {  get;}
-    public MainWindowViewModel()
+    
+
+    [ObservableProperty]
+    private ObservableObject? _vistaActual;
+    public MainWindowViewModel(string rol)
     {
-        MessageCommand = new RelayCommand(Message);
-        
+       
+        DeterminarVistaPorRol(rol);
+
     }
 
-    
-    public void Message()
+    private void DeterminarVistaPorRol(string rol)
     {
-        Debug.WriteLine("Hello, World!");
+       
+        switch (rol.ToLower())
+        {
+            case "bibliotecario":
+                VistaActual = new BibliotecarioViewModel();
+                break;
+
+            case "lector":
+            default:
+                VistaActual = new LectorViewModel();
+                break;
+            case "admin":
+                VistaActual = new AdminViewModel();
+                break;
+        }
     }
-    [RelayCommand]
-    public void Prueba()
-    {
-        Debug.WriteLine("Prueba");
-    }
+
 }
