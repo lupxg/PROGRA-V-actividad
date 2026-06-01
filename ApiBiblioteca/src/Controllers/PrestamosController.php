@@ -51,7 +51,8 @@ class PrestamosController
             json_last_error() !== JSON_ERROR_NONE ||
             !isset($input['usuario_id']) ||
             !isset($input['libro_id']) ||
-            !isset($input['fecha_devolucion'])
+            !isset($input['fecha_devolucion']) ||
+            !isset($input['estado'])
         ) {
             http_response_code(400);
 
@@ -66,6 +67,7 @@ class PrestamosController
         $usuario_id = (int) $input['usuario_id'];
         $libro_id = (int) $input['libro_id'];
         $fecha_devolucion = trim($input['fecha_devolucion']);
+        $estado = $input['estado'];
 
         if ($usuario_id < 1 || $libro_id < 1) {
             http_response_code(400);
@@ -81,7 +83,8 @@ class PrestamosController
         $exito = $this->prestamoModel->create(
             $usuario_id,
             $libro_id,
-            $fecha_devolucion
+            $fecha_devolucion,
+            $estado
         );
 
         if ($exito) {

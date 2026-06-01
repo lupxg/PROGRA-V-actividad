@@ -25,7 +25,8 @@ class Prestamo
                 p.usuario_id,
                 p.libro_id,
                 p.fecha_prestamo,
-                p.fecha_devolucion
+                p.fecha_devolucion,
+                p.estado
             FROM " . $this->table . " p
             ORDER BY p.id DESC
             LIMIT ? OFFSET ?
@@ -60,12 +61,13 @@ class Prestamo
     public function create(
         int $usuario_id,
         int $libro_id,
-        string $fecha_devolucion
+        string $fecha_devolucion,
+        string $estado
     ) {
         $query = "
             INSERT INTO " . $this->table . "
-            (usuario_id, libro_id, fecha_prestamo, fecha_devolucion)
-            VALUES (?, ?, NOW(), ?)
+            (usuario_id, libro_id, fecha_prestamo, fecha_devolucion, estado)
+            VALUES (?, ?, NOW(), ?, ?)
         ";
 
         $stmt = $this->db->prepare($query);
@@ -75,10 +77,11 @@ class Prestamo
         }
 
         $stmt->bind_param(
-            "iis",
+            "iiss",
             $usuario_id,
             $libro_id,
-            $fecha_devolucion
+            $fecha_devolucion,
+            $estado,
         );
 
         $resultado = $stmt->execute();
@@ -137,7 +140,7 @@ class Prestamo
             return false;
         }
 
-        $stmt->bind_param("i", $id);
+        $stmt->bind_param("id", $id);
 
         $resultado = $stmt->execute();
 
