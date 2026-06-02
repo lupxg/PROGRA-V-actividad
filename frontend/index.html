@@ -4,70 +4,147 @@
 <head>
 
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Libros</title>
+    <title>Biblioteca Virtual</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
 
 </head>
 
 <body>
 
-    <div class="container mt-5">
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-custom shadow">
+        <div class="container">
 
-        <div class="d-flex justify-content-between mb-4">
+            <a class="navbar-brand" href="#">
+                Biblioteca Virtual
+            </a>
 
-            <h1>Libros</h1>
+            <div class="d-flex gap-2">
 
-            <div>
-                <a href="login.html" id="btnLogin" class="btn btn-success">
+                <a href="register.html" id="btnRegister" class="btn btn-light btn-custom">
+                    Register
+                </a>
+
+                <a href="login.html" id="btnLogin" class="btn btn-light btn-custom">
                     Login
                 </a>
-                <a href="prestamos.html" id="btnMisPrestamos" class="btn btn-secondary">
+
+                <a href="prestamos.html" id="btnMisPrestamos" class="btn btn-secondary btn-custom">
                     Mis Préstamos
                 </a>
-                <button id="btnLogout" class="btn btn-danger" onclick="logout()">
+
+                <button id="btnLogout" class="btn btn-danger btn-custom" onclick="logout()">
                     Logout
                 </button>
+
             </div>
+
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+
+        <!-- HERO SECTION -->
+        <div class="hero-section">
+
+            <div class="row align-items-center">
+
+                <div class="col-md-8">
+
+                    <h1 class="hero-title">
+                        Libros para prestamos
+                    </h1>
+
+                </div>
+
+            </div>
+
         </div>
 
-        <table class="table table-bordered table-hover">
+        <!-- TABLE -->
+        <div class="table-container">
 
-            <thead class="table-dark">
-                <tr>
-                    <th>ID</th>
-                    <th>Titulo</th>
-                    <th>Autor</th>
-                    <th>Stock</th>
-                    <th>Disponible</th>
-                    <th>Imagen</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
+            <div class="d-flex justify-content-between align-items-center mb-4">
 
-            <tbody id="tablaLibros"></tbody>
+                <h3 class="mb-0">
+                    Lista de Libros
+                </h3>
 
-        </table>
+                <input type="text" class="form-control w-25" placeholder="Buscar libro...">
+
+            </div>
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle">
+
+                    <thead class="table-dark">
+
+                        <tr>
+                            <th>ID</th>
+                            <th>Título</th>
+                            <th>Autor</th>
+                            <th>Stock</th>
+                            <th>Disponible</th>
+                            <th>Imagen</th>
+                            <th>Acciones</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="tablaLibros">
+
+                        <!-- Example Row -->
+                        <!--
+                        <tr>
+                            <td>1</td>
+                            <td>Clean Code</td>
+                            <td>Robert C. Martin</td>
+                            <td>5</td>
+                            <td>
+                                <span class="badge bg-success">
+                                    Disponible
+                                </span>
+                            </td>
+                            <td>
+                                <img src="img/book.jpg" class="book-image">
+                            </td>
+                            <td>
+                                <button class="btn btn-primary btn-sm">
+                                    Prestar
+                                </button>
+                            </td>
+                        </tr>
+                        -->
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
 
     </div>
 
-
     <!-- MODAL PRESTAMO -->
-
     <div class="modal fade" id="prestamoModal" tabindex="-1">
 
         <div class="modal-dialog">
 
             <div class="modal-content">
 
-                <div class="modal-header">
+                <div class="modal-header bg-primary text-white">
 
                     <h5 class="modal-title">
                         Registrar préstamo
                     </h5>
 
-                    <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal">
                     </button>
 
                 </div>
@@ -84,7 +161,10 @@
                                 Usuario
                             </label>
 
-                            <input type="text" class="form-control" id="usuario_nombre" readonly>
+                            <input type="text"
+                                   class="form-control"
+                                   id="usuario_nombre"
+                                   readonly>
 
                         </div>
 
@@ -94,13 +174,20 @@
                                 Fecha devolución
                             </label>
 
-                            <input type="date" class="form-control" id="fecha_devolucion" required>
+                            <input type="date"
+                                   class="form-control"
+                                   id="fecha_devolucion"
+                                   required>
 
                         </div>
 
-                        <button type="submit" class="btn btn-primary">
-                            Confirmar préstamo
-                        </button>
+                        <div class="d-grid">
+
+                            <button type="submit" class="btn btn-primary">
+                                Confirmar préstamo
+                            </button>
+
+                        </div>
 
                     </form>
 
@@ -113,6 +200,11 @@
         </div>
 
     </div>
+
+    <!-- FOOTER -->
+    <footer>
+        Biblioteca Virtual © 2026
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 

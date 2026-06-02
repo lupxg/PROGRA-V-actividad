@@ -1,6 +1,4 @@
-const API_URL = "http://localhost/api";
-
-
+const API_URL = "/api";
 
 async function cargarPrestamos() {
 
