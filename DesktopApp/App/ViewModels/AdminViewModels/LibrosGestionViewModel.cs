@@ -1,27 +1,24 @@
 ﻿using App.Models;
 using App.Services;
-using App.Views;
 using Avalonia.Controls;
-using App.utils;
 using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-
 using System.Threading.Tasks;
-using System.Collections.Generic;
 
-namespace App.ViewModels
+namespace App.ViewModels.AdminViewModels
 {
-    public partial class AdminViewModel : ViewModelBase
+    public partial class LibrosGestionViewModel : ViewModelBase
     {
         private readonly LibroService _libroService = new();
+        private List<Libro> _todosLosLibros = new();
 
         [ObservableProperty] private ObservableCollection<Libro> _libros = new();
-        private List<Libro> _todosLosLibros = new();
 
         // Campos de Formulario
         [ObservableProperty] private int _idFormulario;
@@ -51,7 +48,7 @@ namespace App.ViewModels
                     CategoriaFormulario = value.Categoria;
                     StockFormulario = value.Stock.ToString();
                     DisponibleFormulario = value.Disponible.ToString();
-                    ImagenBase64Formulario = null; // No sobreescribir a menos que elija una nueva
+                    ImagenBase64Formulario = null;
                     NombreArchivoImagen = !string.IsNullOrEmpty(value.ImagenUrl) ? "Imagen guardada en Servidor" : "Sin portada";
                     EsEdicion = true;
                     MensajeFormulario = string.Empty;
@@ -59,8 +56,9 @@ namespace App.ViewModels
             }
         }
 
-        public AdminViewModel()
+        public LibrosGestionViewModel()
         {
+            // Iniciamos la carga de libros de forma asíncrona al crear el ViewModel
             Task.Run(async () => await CargarLibrosAsync());
         }
 
@@ -70,7 +68,6 @@ namespace App.ViewModels
             var lista = await _libroService.ObtenerLibrosAsync();
             _todosLosLibros = lista;
 
-            
             Avalonia.Threading.Dispatcher.UIThread.Post(() =>
             {
                 Libros.Clear();
@@ -102,12 +99,10 @@ namespace App.ViewModels
         [RelayCommand]
         private async Task SeleccionarImagen()
         {
-
             var desktopLifetime = App.Current?.ApplicationLifetime
                 as Avalonia.Controls.ApplicationLifetimes.IClassicDesktopStyleApplicationLifetime;
 
             if (desktopLifetime?.MainWindow == null) return;
-
 
             var topLevel = TopLevel.GetTopLevel(desktopLifetime.MainWindow);
             if (topLevel == null) return;
@@ -160,7 +155,7 @@ namespace App.ViewModels
                 Categoria = CategoriaFormulario,
                 Stock = stockNumerico,
                 Disponible = disponibleNumerico,
-                ImagenBase64 = ImagenBase64Formulario // Se envía la cadena base64 limpia a tu API
+                ImagenBase64 = ImagenBase64Formulario
             };
 
             bool exito = EsEdicion ? await _libroService.ActualizarLibroAsync(libroDto)
@@ -170,7 +165,7 @@ namespace App.ViewModels
             {
                 MostrarMensaje(EsEdicion ? "¡Libro actualizado con éxito!" : "¡Libro creado con éxito!");
                 LimpiarFormulario();
-                await CargarLibrosAsync(); // Refresca inmediatamente la grilla
+                await CargarLibrosAsync();
             }
             else
             {
@@ -186,7 +181,6 @@ namespace App.ViewModels
         [RelayCommand]
         private async Task EliminarLibro()
         {
-
             if (IdFormulario == 0 || !EsEdicion)
             {
                 MensajeFormulario = "Selecciona un libro de la lista para poder eliminarlo.";
@@ -195,40 +189,34 @@ namespace App.ViewModels
 
             MensajeFormulario = "Eliminando libro...";
 
-
-            bool exito = await _libroService.EliminarLibroAsync(IdFormulario);
+            int idAEliminar = IdFormulario;
+            bool exito = await _libroService.EliminarLibroAsync(idAEliminar);
 
             if (exito)
             {
-
-                
-                var libroEnCache = _todosLosLibros.FirstOrDefault(l => l.Id == IdFormulario);
+                var libroEnCache = _todosLosLibros.FirstOrDefault(l => l.Id == idAEliminar);
                 if (libroEnCache != null)
                 {
                     _todosLosLibros.Remove(libroEnCache);
                 }
 
-                
                 Avalonia.Threading.Dispatcher.UIThread.Post(() =>
                 {
-                    var libroABorrar = Libros.FirstOrDefault(l => l.Id == IdFormulario);
+                    var libroABorrar = Libros.FirstOrDefault(l => l.Id == idAEliminar);
                     if (libroABorrar != null)
                     {
                         Libros.Remove(libroABorrar);
                     }
                 });
 
-
                 LimpiarFormulario();
                 MensajeFormulario = "Libro eliminado correctamente.";
-                
             }
             else
             {
                 MensajeFormulario = "Error del servidor o de conexión al intentar eliminar el libro.";
             }
         }
-        
 
         [RelayCommand]
         private void LimpiarFormulario()
@@ -246,4 +234,6 @@ namespace App.ViewModels
             MensajeFormulario = string.Empty;
         }
     }
+
+
 }

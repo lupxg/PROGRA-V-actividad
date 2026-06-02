@@ -3,6 +3,7 @@ using Avalonia.Media.Imaging;
 using System;
 using System.Globalization;
 using System.IO;
+using System.Diagnostics;
 using System.Net.Http;
 
 namespace App.utils
@@ -18,7 +19,7 @@ namespace App.utils
                 if (url.StartsWith("http://", StringComparison.OrdinalIgnoreCase) ||
                     url.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
                 {
-                    // Creamos una tarea en segundo plano controlada para no congelar el renderizado visual
+                   
                     return AllocateBitmapAsync(url);
                 }
             }
@@ -29,7 +30,7 @@ namespace App.utils
         {
             try
             {
-                // Usamos una petición síncrona de streams optimizada para IO que Avalonia tolera mejor en hilos de bindings
+                
                 using var response = _httpClient.GetAsync(url).GetAwaiter().GetResult();
                 if (response.IsSuccessStatusCode)
                 {
@@ -39,8 +40,8 @@ namespace App.utils
             }
             catch (Exception ex)
             {
-                // Imprime en la terminal de Lubuntu si hay un problema real de ruta o conexión
-                System.Diagnostics.Debug.WriteLine($"[UrlToBitmapConverter] Error: {ex.Message}");
+                
+                Debug.WriteLine($"[UrlToBitmapConverter] Error: {ex.Message}");
             }
             return null;
         }
