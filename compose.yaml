@@ -23,7 +23,7 @@ services:
     volumes:
       - db-data:/var/lib/mysql
     environment: 
-      MARIADB_ROOT_PASSWORD_FILE: "${MARIADB_ROOT_PASSWORD_FILE}" 
+      MARIADB_ROOT_PASSWORD_FILE: "/run/secrets/db-password"
       MARIADB_DATABASE: "${MARIADB_NAME}"
     expose: 
       - "${MARIADB_PORT:-3306}"
@@ -43,7 +43,7 @@ services:
   phpmyadmin:
     image: phpmyadmin
     ports:
-      - 8080:80
+      - 8081:80
     depends_on:
       - db
     environment:
@@ -52,7 +52,7 @@ services:
   web:
     <<: *default-app
     ports:
-      - "80:${PORT:-80}"
+      - "${PORT:-8000}:80"
     healthcheck:
       test: "curl -X 'GET' 'http://localhost:80' -H 'accept: application/json'"
       interval: "60s"
