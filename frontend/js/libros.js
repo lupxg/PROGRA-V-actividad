@@ -1,4 +1,4 @@
-const API_URL = "http://localhost/api";
+const API_URL = "/api";
 
 const modalElement = document.getElementById("prestamoModal");
 
@@ -98,18 +98,21 @@ function controlarAuthUI() {
     );
 
     const btnLogin = document.getElementById("btnLogin");
+    const btnRegister = document.getElementById("btnRegister")
     const btnLogout = document.getElementById("btnLogout");
     const btnPrestamos = document.getElementById("btnMisPrestamos");
 
     if (!usuario) {
 
         btnLogin.style.display = "inline-block";
+        btnRegister.style.display = "inline-block";
         btnLogout.style.display = "none";
         btnPrestamos.style.display = "none";
 
     } else {
 
         btnLogin.style.display = "none";
+        btnRegister.style.display = "none";
         btnLogout.style.display = "inline-block";
         btnPrestamos.style.display = "inline-block";
     }
@@ -173,7 +176,6 @@ document
                 setTimeout(() => {
                     window.location.href = "prestamos.html";
                 }, 1000);
-                //cargarLibros();
 
             } else {
 
@@ -198,7 +200,7 @@ document
 
 
 
-window.onload = function () {
+document.addEventListener("DOMContentLoaded", () => {
     cargarLibros();
     controlarAuthUI();
-};
+});
