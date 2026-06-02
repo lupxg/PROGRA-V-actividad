@@ -33,9 +33,8 @@ services:
 
     volumes:
       - db-data:/var/lib/mysql
-
-    environment:
-      MARIADB_ROOT_PASSWORD_FILE: "${MARIADB_ROOT_PASSWORD_FILE}"
+    environment: 
+      MARIADB_ROOT_PASSWORD_FILE: "/run/secrets/db-password"
       MARIADB_DATABASE: "${MARIADB_NAME}"
 
     expose:
@@ -55,20 +54,20 @@ services:
       timeout: 5s
       retries: 5
 
-
-  # =====================================
-  # PHP + APACHE (FRONTEND + API)
-  # =====================================
+  phpmyadmin:
+    image: phpmyadmin
+    ports:
+      - 8081:80
+    depends_on:
+      - db
+    environment:
+      - PMA_HOST=db
 
   web:
     <<: *default-app
 
     ports:
-      - "80:80"
-
-    volumes:
-      - ./:/var/www/html
-
+      - "${PORT:-8000}:80"
     healthcheck:
       test: "curl -f http://localhost/"
       interval: 60s
