@@ -29,7 +29,8 @@ RUN a2enmod rewrite \
  && a2enconf routes \
  && mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
-COPY infrastructure/apache/000-default.conf /etc/apache2/sites-available/000-default.conf
+COPY ./infrastructure/apache/000-default.conf /etc/apache2/sites-available/000-default.conf
 COPY --from=deps app/vendor/ /var/www/html/vendor
-COPY --chown=www-data:www-data ./ApiBiblioteca /var/www/html
+COPY --chown=www-data:www-data ./frontend /var/www/html/frontend
+COPY --chown=www-data:www-data ./ApiBiblioteca /var/www/html/ApiBiblioteca
 
