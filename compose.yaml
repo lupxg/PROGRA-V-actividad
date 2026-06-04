@@ -54,22 +54,13 @@ services:
       timeout: 5s
       retries: 5
 
-  phpmyadmin:
-    image: phpmyadmin
-    ports:
-      - 8081:80
-    depends_on:
-      - db
-    environment:
-      - PMA_HOST=db
-
   web:
     <<: *default-app
 
     ports:
       - "${PORT:-8000}:80"
     healthcheck:
-      test: "curl -f http://localhost/"
+      test: "curl -X 'GET' 'http://localhost' -H 'accept: application/json'"
       interval: 60s
       timeout: 3s
       start_period: 5s
