@@ -14,7 +14,7 @@ internal class LoginService
 
     public LoginService()
     {
-        _client.BaseAddress = new Uri("http://localhost:3000/api/");
+        _client.BaseAddress = new Uri("http://localhost:8000/api/");
     }
 
     public async Task<(bool Succes, string Message, User? User)> LoginAsync(string? username, string? password)

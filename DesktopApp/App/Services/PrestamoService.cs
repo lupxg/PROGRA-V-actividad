@@ -63,8 +63,6 @@ namespace App.Services
 
         /// <summary>
         /// PUT u Opcional /api/prestamos/{id}
-        /// Nota: Tu controlador de PHP actual no tiene 'update()', puedes implementarlo en PHP 
-        /// recibiendo el JSON y ejecutando un UPDATE prestamos SET estado = ? WHERE id = ?
         /// </summary>
         public async Task<bool> ActualizarEstadoPrestamoAsync(int id, string nuevoEstado)
         {

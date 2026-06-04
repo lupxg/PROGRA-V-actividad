@@ -11,7 +11,7 @@ namespace App.Services
     internal class LibroService
     {
         private readonly HttpClient _http;
-        private const string BaseUrl = "http://localhost:3000/api/libros"; // Ajusta a tu puerto real si varía
+        private const string BaseUrl = "http://localhost:8000/api/libros"; 
 
         public LibroService()
         {
@@ -61,7 +61,7 @@ namespace App.Services
         {
             try
             {
-                // Envia la peticion DELETE a http://localhost:3000/api/libros/{id}
+                
                 var respuesta = await _http.DeleteAsync($"{BaseUrl}/{id}");
                 return respuesta.IsSuccessStatusCode;
             }
