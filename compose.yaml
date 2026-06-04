@@ -1,0 +1,94 @@
+x-app: &default-app
+  build:
+    context: .
+    dockerfile: ./infrastructure/docker/Dockerfile
+    target: final
+
+  restart: unless-stopped
+
+  secrets:
+    - db-password
+
+  env_file:
+    - ".env"
+
+  depends_on:
+    db:
+      condition: service_healthy
+
+
+services:
+
+  # =====================================
+  # DATABASE
+  # =====================================
+
+  db:
+    image: mariadb:latest
+
+    restart: always
+
+    secrets:
+      - db-password
+
+    volumes:
+      - db-data:/var/lib/mysql
+    environment: 
+      MARIADB_ROOT_PASSWORD_FILE: "/run/secrets/db-password"
+      MARIADB_DATABASE: "${MARIADB_NAME}"
+
+    expose:
+      - "${MARIADB_PORT:-3306}"
+
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "/usr/local/bin/healthcheck.sh",
+          "--su-mysql",
+          "--connect",
+          "--innodb_initialized"
+        ]
+
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  web:
+    <<: *default-app
+
+    ports:
+      - "${PORT:-8000}:80"
+    healthcheck:
+      test: "curl -X 'GET' 'http://localhost' -H 'accept: application/json'"
+      interval: 60s
+      timeout: 3s
+      start_period: 5s
+
+
+  # =====================================
+  # PHPMYADMIN
+  # =====================================
+
+  phpmyadmin:
+    image: phpmyadmin
+
+    restart: unless-stopped
+
+    ports:
+      - "8080:80"
+
+    depends_on:
+      - db
+
+    environment:
+      PMA_HOST: db
+
+
+volumes:
+  db-data:
+
+
+secrets:
+  db-password:
+    file: ./infrastructure/db/password.txt
