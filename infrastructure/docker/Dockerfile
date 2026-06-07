@@ -45,11 +45,11 @@ RUN a2ensite 000-default.conf
 
 WORKDIR /var/www/html
 
-COPY --from=deps app/vendor/ /var/www/html/vendor
+COPY --chown=www-data:www-data --from=deps app/vendor/ /var/www/html/vendor
+COPY --chown=www-data:www-data ./ApiBiblioteca/composer.json /var/www/html/composer.json
 COPY --chown=www-data:www-data ./frontend /var/www/html/frontend
 COPY --chown=www-data:www-data ./ApiBiblioteca /var/www/html/ApiBiblioteca
 
-RUN chown -R www-data:www-data /var/www/html
 
 EXPOSE 80
 
