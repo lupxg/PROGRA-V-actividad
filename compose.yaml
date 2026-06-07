@@ -27,7 +27,6 @@ services:
       MARIADB_DATABASE: "${MARIADB_NAME}"
       MARIADB_USER: "${MARIADB_USER}"
       MARIADB_PASSWORD_FILE: "${MARIADB_PASSWORD_FILE}"
-
     expose:
       - "${MARIADB_PORT:-3306}"
     healthcheck:
@@ -42,6 +41,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - backend
   
   # ============================= WEB ================================== 
   web:
@@ -53,6 +54,9 @@ services:
       interval: 60s
       timeout: 3s
       start_period: 5s
+    networks:
+      - frontend
+      - backend
 
   # ============================= PHPMYADMIN ============================
   phpmyadmin:
@@ -64,6 +68,9 @@ services:
       - db
     environment:
       PMA_HOST: db
+    networks:
+      - backend
+      - frontend
 
 
 volumes:
@@ -72,3 +79,9 @@ volumes:
 secrets:
   db-password:
     file: ./infrastructure/db/password.txt
+
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    internal: true
