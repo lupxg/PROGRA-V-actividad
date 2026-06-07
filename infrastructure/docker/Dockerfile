@@ -22,15 +22,35 @@ RUN --mount=type=bind,source=./ApiBiblioteca/composer.json,target=composer.json 
 
 FROM php:8.3-apache AS final
 
-RUN a2enmod rewrite \
- && docker-php-ext-install mysqli opcache \
- && sed -i 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.conf \
- && echo "DirectoryIndex routex.php" > /etc/apache2/conf-available/routes.conf \
- && a2enconf routes \
- && mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        curl \
+    && docker-php-ext-install \
+        mysqli \
+        opcache \
+    && a2enmod rewrite \
+    && rm -rf /var/lib/apt/lists/* \
+    && mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" \
+    && { \
+        echo 'opcache.enable=1'; \
+        echo 'opcache.memory_consumption=128'; \
+        echo 'opcache.interned_strings_buffer=8'; \
+        echo 'opcache.max_accelerated_files=4000'; \
+        echo 'opcache.revalidate_freq=2'; \
+        echo 'opcache.fast_shutdown=1'; \
+    } > /usr/local/etc/php/conf.d/opcache.ini
 
-COPY ./infrastructure/apache/000-default.conf /etc/apache2/sites-available/000-default.conf
-COPY --from=deps app/vendor/ /var/www/html/vendor
+COPY --chown=www-data:www-data ./infrastructure/apache/000-default.conf /etc/apache2/sites-available/000-default.conf
+RUN a2ensite 000-default.conf
+
+WORKDIR /var/www/html
+
+COPY --chown=www-data:www-data --from=deps app/vendor/ /var/www/html/vendor
+COPY --chown=www-data:www-data ./ApiBiblioteca/composer.json /var/www/html/composer.json
 COPY --chown=www-data:www-data ./frontend /var/www/html/frontend
 COPY --chown=www-data:www-data ./ApiBiblioteca /var/www/html/ApiBiblioteca
 
+
+EXPOSE 80
+
+CMD ["apache2-foreground"]
