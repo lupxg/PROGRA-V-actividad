@@ -1,0 +1,17 @@
+{
+    "name": "lupxg/api-biblioteca",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Lupxg\\ApiBiblioteca\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Gerson Molina",
+            "email": "gerson.chachagua80@gmail.com"
+        }
+    ],
+    "require": {}
+}

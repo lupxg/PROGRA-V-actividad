@@ -1,0 +1,48 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:vm="using:App.ViewModels"
+             x:Class="App.Views.BibliotecarioView"
+             x:DataType="vm:BibliotecarioViewModel"
+             >
+
+    <Grid ColumnDefinitions="240, *">
+        <Border Grid.Column="0" BorderBrush="#2A2238" BorderThickness="0,0,1,0" Background="#07050A">
+            <Grid RowDefinitions="Auto, *, Auto" Margin="20">
+                <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="12" Margin="0,10,0,30">
+                    <TextBlock Text="BiblioNet" FontSize="18" FontWeight="Bold" Foreground="#FFFFFF" VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <StackPanel Grid.Row="1" Spacing="8">
+                    <Button Classes="MenuButton Active" HorizontalAlignment="Stretch">
+                        <StackPanel Orientation="Horizontal" Spacing="10"><TextBlock Text="📚"/> <TextBlock Text="Libros"/></StackPanel>
+                    </Button>
+                    <Button Classes="MenuButton" HorizontalAlignment="Stretch">
+                        <StackPanel Orientation="Horizontal" Spacing="10"><TextBlock Text="📥"/> <TextBlock Text="Pedidos Usuarios"/></StackPanel>
+                    </Button>
+                    <Button Classes="MenuButton" HorizontalAlignment="Stretch">
+                        <StackPanel Orientation="Horizontal" Spacing="10"><TextBlock Text="💸"/> <TextBlock Text="Moras/Multas"/></StackPanel>
+                    </Button>
+                </StackPanel>
+
+                <Border Grid.Row="2" BorderBrush="#2A2238" BorderThickness="0,1,0,0" Padding="0,15,0,0">
+                    <DockPanel>
+                        <StackPanel Spacing="2" VerticalAlignment="Center">
+                            <TextBlock Text="Carlos Mendoza" FontSize="13" FontWeight="SemiBold" Foreground="#FFFFFF"/>
+                            <TextBlock Text="Bibliotecario" FontSize="11" Foreground="#512BD4"/>
+                        </StackPanel>
+                        <Button Content="🚪" Background="Transparent" BorderThickness="0" HorizontalAlignment="Right"/>
+                    </DockPanel>
+                </Border>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Column="1" Margin="30">
+            <TextBlock Text="Módulo de Bibliotecario - Gestión de Libros y Pedidos" Foreground="#6F6C7D" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Grid>
+    </Grid>
+
+
+</UserControl>
