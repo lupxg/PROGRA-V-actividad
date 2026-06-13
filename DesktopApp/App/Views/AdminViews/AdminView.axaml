@@ -1,0 +1,68 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="App.Views.AdminViews.AdminView"
+             xmlns:vm="using:App.ViewModels.AdminViewModels"
+             xmlns:conv="using:App.utils"
+             x:DataType="vm:AdminViewModel"
+
+             >
+    <Grid ColumnDefinitions="240, *">
+
+        <Border Grid.Column="0" BorderBrush="#2A2238" BorderThickness="0,0,1,0" Background="#07050A">
+            <Grid RowDefinitions="Auto, *, Auto" Margin="20">
+                <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="12" Margin="0,10,0,30">
+                    <TextBlock Text="BiblioNet" FontSize="18" FontWeight="Bold" Foreground="#FFFFFF" VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <StackPanel Grid.Row="1" Spacing="8">
+                    <Button Classes="MenuButton" Command="{Binding MostrarSeccionLibrosCommand}" HorizontalAlignment="Stretch">
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <TextBlock Text="📚"/>
+                            <TextBlock Text="Libros"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Classes="MenuButton" HorizontalAlignment="Stretch">
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <TextBlock Text="👥"/>
+                            <TextBlock Text="Usuarios"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Classes="MenuButton" Command="{Binding MostrarSeccionPedidosCommand}" HorizontalAlignment="Stretch">
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <TextBlock Text="📥"/>
+                            <TextBlock Text="Pedidos Usuarios"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Classes="MenuButton" HorizontalAlignment="Stretch">
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <TextBlock Text="💸"/>
+                            <TextBlock Text="Moras/Multas"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+
+                <Border Grid.Row="2" BorderBrush="#2A2238" BorderThickness="0,1,0,0" Padding="0,15,0,0">
+                    <DockPanel>
+                        <StackPanel Spacing="2" VerticalAlignment="Center">
+                            <TextBlock Text="Admin" FontSize="13" FontWeight="SemiBold" Foreground="#FFFFFF"/>
+                            <TextBlock Text="Administrador" FontSize="11" Foreground="#A370F7"/>
+                        </StackPanel>
+                        <Button Content="🚪" Background="Transparent" BorderThickness="0" HorizontalAlignment="Right"/>
+                    </DockPanel>
+                </Border>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Column="1" Margin="25">
+            <TransitioningContentControl Content="{Binding VistaActual}">
+                <TransitioningContentControl.PageTransition>
+                    <CrossFade Duration="0:0:0.25"/>
+                </TransitioningContentControl.PageTransition>
+            </TransitioningContentControl>
+        </Grid>
+
+    </Grid>
+</UserControl>
