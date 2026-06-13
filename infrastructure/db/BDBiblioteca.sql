@@ -15,7 +15,8 @@ CREATE TABLE libros (
     autor VARCHAR(100) NOT NULL,
     categoria VARCHAR(100),
     stock INT NOT NULL DEFAULT 0,
-    disponible INT NOT NULL DEFAULT 0
+    disponible INT NOT NULL DEFAULT 0,
+    imagen_url VARCHAR(255) NULL
 );
 
 CREATE TABLE prestamos (
@@ -36,10 +37,3 @@ CREATE TABLE multas (
     pagada BOOLEAN DEFAULT FALSE,
     FOREIGN KEY (prestamo_id) REFERENCES prestamos(id) ON DELETE CASCADE
 );
-
-
--- INSERT INTO usuarios (nombre, correo, password, rol) VALUES ( 'Guillermo Chávez', 'guillermo@correo.com', '$2y$10$vGZlyB/zQJ0bHwJ2k3mFauXvLox0lW2R3tZlV1/I.oZExKRE85nba', 'admin');
-
-SELECT * FROM usuarios;
-SELECT * FROM Libros;
-ALTER TABLE libros ADD COLUMN imagen_url VARCHAR(255) NULL AFTER disponible;

@@ -5,12 +5,15 @@ x-app: &default-app
     target: final
   restart: unless-stopped
   secrets:
-    - db-password
+    - db_root_password
+    - db_password
   env_file:
     - ".env"
   depends_on:
     db:
       condition: service_healthy
+  networks:
+    - backend
 
 
 services:
@@ -19,14 +22,16 @@ services:
     image: mariadb:11.2
     restart: always
     secrets:
-      - db-password
+      - db_root_password
+      - db_password
     volumes:
       - db-data:/var/lib/mysql
+      - ./infrastructure/db/BDBiblioteca.sql:/docker-entrypoint-initdb.d/1.sql
     environment: 
       MARIADB_ROOT_PASSWORD_FILE: "${MARIADB_ROOT_PASSWORD_FILE}"
+      MARIADB_PASSWORD_FILE: "${MARIADB_PASSWORD_FILE}"
       MARIADB_DATABASE: "${MARIADB_NAME}"
       MARIADB_USER: "${MARIADB_USER}"
-      MARIADB_PASSWORD_FILE: "${MARIADB_PASSWORD_FILE}"
     expose:
       - "${MARIADB_PORT:-3306}"
     healthcheck:
@@ -49,6 +54,11 @@ services:
     <<: *default-app
     ports:
       - "${PORT:-8000}:80"
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: "1.0"
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost/api/libros || exit 1"]
       interval: 60s
@@ -65,7 +75,8 @@ services:
     ports:
       - "8080:80"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
       PMA_HOST: db
     networks:
@@ -77,8 +88,10 @@ volumes:
   db-data:
 
 secrets:
-  db-password:
+  db_password:
     file: ./infrastructure/db/password.txt
+  db_root_password:
+    file: ./infrastructure/db/root-password.txt
 
 networks:
   frontend:
