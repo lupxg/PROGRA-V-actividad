@@ -26,6 +26,7 @@ services:
       - db_password
     volumes:
       - db-data:/var/lib/mysql
+      - ./infrastructure/db/BDBiblioteca.sql:/docker-entrypoint-initdb.d/1.sql
     environment: 
       MARIADB_ROOT_PASSWORD_FILE: "${MARIADB_ROOT_PASSWORD_FILE}"
       MARIADB_PASSWORD_FILE: "${MARIADB_PASSWORD_FILE}"
