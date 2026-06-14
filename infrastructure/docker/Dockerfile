@@ -40,8 +40,10 @@ RUN apt-get update \
         echo 'opcache.fast_shutdown=1'; \
     } > /usr/local/etc/php/conf.d/opcache.ini
 
-COPY --chown=www-data:www-data ./infrastructure/apache/000-default.conf /etc/apache2/sites-available/000-default.conf
-RUN a2ensite 000-default.conf
+# Loading Apache config
+COPY --chown=www-data:www-data ./infrastructure/apache/000-default.conf /etc/apache2/sites-enabled/000-default.conf
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf \ 
+    && a2ensite 000-default.conf
 
 WORKDIR /var/www/html
 
@@ -49,7 +51,6 @@ COPY --chown=www-data:www-data --from=deps app/vendor/ /var/www/html/vendor
 COPY --chown=www-data:www-data ./ApiBiblioteca/composer.json /var/www/html/composer.json
 COPY --chown=www-data:www-data ./frontend /var/www/html/frontend
 COPY --chown=www-data:www-data ./ApiBiblioteca /var/www/html/ApiBiblioteca
-
 
 EXPOSE 80
 
